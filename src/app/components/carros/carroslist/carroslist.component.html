@@ -1,0 +1,63 @@
+<div class="container">
+    <div class="row">
+        <br>
+        <div class="col-lg-12"></div>
+        <div class="card">
+            <div class="card-body"> 
+                <h3>Listagem</h3>
+                <div class="direita">
+                    <button type="button" class="btn btn-success" mdbRipple (click)="new()">Novo</button>
+                </div>
+                <!--
+                <div class="direita">
+                    <button type="button" class="btn btn-success" mdbRipple routerLink="/admin/carros/new">Novo</button>
+                </div>
+                -->
+                <br>
+                <table border="1" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th class="direita">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (carro of lista; track $index) {
+                        <tr>
+                            <td>{{carro.id}}</td>
+                            <td>{{carro.nome}}</td>
+                            <td class="direita">
+                                <button type="button" class="btn btn-primary" mdbRipple (click)="edit(carro)">Editar</button>
+                                <button type="button" class="btn btn-danger" mdbRipple (click)="deleteById(carro)">Deletar</button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>     
+
+<ng-template #modalCarroDetalhe>
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Cadastro</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modalRef.close()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <app-carrosdetails [carro]="carroEdit" (retorno)="retornoDetalhe($event)"></app-carrosdetails>
+  </div>
+  <!--
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
+      Close
+    </button>
+    <button type="button" class="btn btn-primary">Save changes</button>
+  </div>
+  -->
