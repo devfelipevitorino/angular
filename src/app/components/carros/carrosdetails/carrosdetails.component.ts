@@ -4,6 +4,7 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { CarroService } from '../../../services/carro.service';
 
 @Component({
   selector: 'app-carrosdetails',
@@ -14,10 +15,11 @@ import Swal from 'sweetalert2';
 })
 export class CarrosdetailsComponent {
 
-  @Input("carro") carro: Carro = new Carro(0, "");
+  @Input("carro") carro: Carro = new Carro();
   @Output("retorno") retorno = new EventEmitter<any>();
   router = inject(ActivatedRoute);
   routerGeneric = inject(Router);
+  carroService = inject(CarroService);
 
   constructor() {
     let id = this.router.snapshot.params['id'];
@@ -27,24 +29,54 @@ export class CarrosdetailsComponent {
   }
 
   findById(id: number) {
-    let CarroRetornado: Carro = new Carro(id, "Fiesta");
-    this.carro = CarroRetornado;
+    this.carroService.findById(id).subscribe({
+      next: retorno => {
+        this.carro = retorno;
+      },error: err =>{
+        Swal.fire({
+          title: "Ocorreu um erro!",
+          icon: "error"
+        });
+      }
+    });
   }
 
   save() {
     if (this.carro.id > 0) {
-      Swal.fire({
-        title: "Editado com sucesso!",
-        icon: "success"
+
+      this.carroService.update(this.carro, this.carro.id).subscribe({
+        next: mensagem => {
+          Swal.fire({
+            title: mensagem,
+            icon: "success"
+          });
+          this.routerGeneric.navigate(["admin/carros"], { state: { carroEditado: this.carro } });
+          this.retorno.emit(this.carro);
+        },error: err =>{
+          Swal.fire({
+            title: "Ocorreu um erro!",
+            icon: "error"
+          });
+        }
       });
-      this.routerGeneric.navigate(["admin/carros"], { state: { carroEditado: this.carro } });
+      
     } else {
-      Swal.fire({
-        title: "Salvo com sucesso!",
-        icon: "success"
-      });
-      this.routerGeneric.navigate(["admin/carros"], { state: { carroNovo: this.carro } });
+
+      this.carroService.save(this.carro).subscribe({
+        next: mensagem => {
+          Swal.fire({
+            title: mensagem,
+            icon: "success"
+          });
+          this.routerGeneric.navigate(["admin/carros"], { state: { carroNovo: this.carro } });
+          this.retorno.emit(this.carro);
+        },error: err =>{
+          Swal.fire({
+            title: "Ocorreu um erro!",
+            icon: "error"
+          });
+        }
+      }); 
     }
-    this.retorno.emit(this.carro);
   }
 }
