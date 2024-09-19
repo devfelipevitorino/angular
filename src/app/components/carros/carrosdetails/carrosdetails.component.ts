@@ -1,15 +1,18 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { Carro } from '../../../models/carro';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { CarroService } from '../../../services/carro.service';
+import { MarcaslistComponent } from "../../marcas/marcaslist/marcaslist.component";
+import { Marca } from '../../../models/marca';
+import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 
 @Component({
   selector: 'app-carrosdetails',
   standalone: true,
-  imports: [MdbFormsModule, FormsModule],
+  imports: [MdbFormsModule, FormsModule, MarcaslistComponent],
   templateUrl: './carrosdetails.component.html',
   styleUrl: './carrosdetails.component.scss'
 })
@@ -20,6 +23,10 @@ export class CarrosdetailsComponent {
   router = inject(ActivatedRoute);
   routerGeneric = inject(Router);
   carroService = inject(CarroService);
+
+  modalService = inject(MdbModalService); //abrir a modal
+  @ViewChild('modalMarcas') modalMarcas!: TemplateRef<any>;
+  modalRef!:MdbModalRef<any>;
 
   constructor() {
     let id = this.router.snapshot.params['id'];
@@ -78,5 +85,18 @@ export class CarrosdetailsComponent {
         }
       }); 
     }
+  }
+
+  buscarMarca(){
+    this.modalRef = this.modalService.open(this.modalMarcas, {modalClass: "modal-lg"});
+  }
+
+  retornoMarca(marca: Marca){
+    this.carro.marca = marca;
+    this.modalRef.close();
+  }
+
+  trocarMarca(){
+
   }
 }

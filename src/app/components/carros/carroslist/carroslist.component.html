@@ -4,7 +4,7 @@
         <div class="col-lg-12"></div>
         <div class="card">
             <div class="card-body"> 
-                <h3>Listagem</h3>
+                <h3>Carros</h3>
                 <div class="direita">
                     <button type="button" class="btn btn-success" mdbRipple (click)="new()">Novo</button>
                 </div>
@@ -19,6 +19,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nome</th>
+                            <th>Marca</th>
                             <th class="direita">Ações</th>
                         </tr>
                     </thead>
@@ -27,6 +28,12 @@
                         <tr>
                             <td>{{carro.id}}</td>
                             <td>{{carro.nome}}</td>
+                            @if (carro.marca) {
+                                <td>{{carro.marca.nome}}</td>
+                            }@else {
+                                <td>Marca não associada</td>
+                            }
+                            
                             <td class="direita">
                                 <button type="button" class="btn btn-primary" mdbRipple (click)="edit(carro)">Editar</button>
                                 <button type="button" class="btn btn-danger" mdbRipple (click)="deleteById(carro)">Deletar</button>
