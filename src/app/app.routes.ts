@@ -5,6 +5,8 @@ import { CarroslistComponent } from './components/carros/carroslist/carroslist.c
 import { CarrosdetailsComponent } from './components/carros/carrosdetails/carrosdetails.component';
 import { MarcaslistComponent } from './components/marcas/marcaslist/marcaslist.component';
 import { MarcasdetailsComponent } from './components/marcas/marcasdetails/marcasdetails.component';
+import { AcesoriolistComponent } from './components/acessorio/acesoriolist/acesoriolist.component';
+import { AcesoriodetailsComponent } from './components/acessorio/acesoriodetails/acesoriodetails.component';
 
 export const routes: Routes = [
     { path: "", redirectTo: "login", pathMatch: 'full' },
@@ -18,6 +20,9 @@ export const routes: Routes = [
             { path: "marcas", component: MarcaslistComponent },
             { path: "marcas/new", component: MarcasdetailsComponent },
             { path: "marcas/edit/:id", component: MarcaslistComponent },
+            { path: "acessorio", component: AcesoriolistComponent },
+            { path: "acessorio/new", component: AcesoriodetailsComponent },
+            { path: "acessorio/edit/:id", component: AcesoriolistComponent },
         ]
     }
 ];
